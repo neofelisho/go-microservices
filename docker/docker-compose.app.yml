@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  postgres:
+
+  grpc_server:
+    build:
+      context: .
+      dockerfile: docker/grpc_server.Dockerfile
+    command: ./grpc_server
+    depends_on:
+      - postgres
+    restart: always
+    ports:
+      - '50051:50051'
+
+  restful_api:
+    build:
+      context: .
+      dockerfile: docker/restful_api.Dockerfile
+    command: ./restful_api
+    depends_on:
+      - grpc_server
+    restart: always
+    ports:
+      - '1323:1323'
