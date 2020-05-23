@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/neofelisho/go-micro-service/config"
 	"io/ioutil"
 	"net/http"
 )
@@ -20,7 +21,7 @@ func main() {
 	e.POST("/", echoRequest)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(config.MustLoad().API.BindingAddress()))
 }
 
 func echoRequest(context echo.Context) error {

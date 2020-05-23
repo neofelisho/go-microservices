@@ -15,4 +15,3 @@ RUN go build -ldflags "-s -w" -o /release/grpc_server ./cmd/grpc_server
 FROM alpine:${ALPINE_VERSION}
 WORKDIR /app
 COPY --from=builder /release .
-EXPOSE 50051

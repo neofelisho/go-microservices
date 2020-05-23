@@ -7,16 +7,15 @@ services:
     volumes:
       - postgresql:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: ${GMS_DATABASE_USER}
+      POSTGRES_PASSWORD: ${GMS_DATABASE_PASSWORD}
     ports:
-      - '5432:5432'
+      - ${GMS_DATABASE_PORT}:${GMS_DATABASE_PORT}
     healthcheck:
-      test: PGPASSWORD=postgres psql -h localhost -U postgres -c '\q'
+      test: pg_isready -U ${GMS_DATABASE_USER}
       interval: 10s
-      timeout: 10s
-      retries: 10
-      start_period: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgresql:

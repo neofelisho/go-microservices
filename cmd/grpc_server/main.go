@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/neofelisho/go-micro-service/config"
 	"github.com/neofelisho/go-micro-service/proto"
 	"google.golang.org/grpc"
 	"log"
@@ -22,7 +23,7 @@ func (g greeterServer) SayHello(_ context.Context, request *proto.HelloRequest) 
 }
 
 func main() {
-	listener, err := net.Listen("tcp", ":50051")
+	listener, err := net.Listen("tcp", config.MustLoad().GRPC.BindingAddress())
 	if err != nil {
 		log.Fatalf("failed to create tcp connection: %v", err)
 	}

@@ -15,4 +15,3 @@ RUN go build -ldflags "-s -w" -o /release/restful_api ./cmd/restful_api
 FROM alpine:${ALPINE_VERSION}
 WORKDIR /app
 COPY --from=builder /release .
-EXPOSE 1323
