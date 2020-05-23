@@ -8,7 +8,7 @@ In this project we use OS environment variables to keep configuration setting.
 
 ## Usage
 
-### *.env
+### .env Files
 
 Keep variables as key/value pairs, e.g.,
 
@@ -20,7 +20,7 @@ GMS_DATABASE_PASSWORD=postgres
 The supported environments for now are:
 
 ```shell script
-$ env/env.sh                                                                                                                    27.6s  Sat 23 May 2020 10:43:23 PM UTC
+$ env/env.sh
 Please specify one of the available environment:
 dev
 docker
