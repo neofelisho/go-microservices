@@ -5,22 +5,26 @@ services:
 
   grpc_server:
     build:
-      context: .
+      context: ../.
       dockerfile: docker/grpc_server.Dockerfile
+    env_file:
+      - ../env/docker.env
     command: ./grpc_server
     depends_on:
       - postgres
     restart: always
     ports:
-      - '50051:50051'
+      - ${GMS_GRPC_PORT}:${GMS_GRPC_TARGET_PORT}
 
   restful_api:
     build:
-      context: .
+      context: ../.
       dockerfile: docker/restful_api.Dockerfile
+    env_file:
+      - ../env/docker.env
     command: ./restful_api
     depends_on:
       - grpc_server
     restart: always
     ports:
-      - '1323:1323'
+      - ${GMS_API_PORT}:${GMS_API_TARGET_PORT}
