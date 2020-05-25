@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-server
+  labels:
+    app: grpc-server
+  namespace: go-micro-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-server
+  template:
+    metadata:
+      labels:
+        app: grpc-server
+    spec:
+      containers:
+        - name: grpc-server
+          image: go-micro-service/grpc-server:testing
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 50051
+          command:
+            - ./grpc_server
+          env:
+            - name: GMS_DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: HOST
+                  name: gms-database
+            - name: GMS_DATABASE_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: PORT
+                  name: gms-database
+            - name: GMS_DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  key: USER
+                  name: gms-database
+            - name: GMS_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PASSWORD
+                  name: gms-database
+            - name: GMS_GRPC_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: HOST
+                  name: gms-grpc
+            - name: GMS_GRPC_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: PORT
+                  name: gms-grpc
+            - name: GMS_GRPC_TARGET_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: TARGET_PORT
+                  name: gms-grpc
+            - name: GMS_API_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: PORT
+                  name: gms-api
+            - name: GMS_API_TARGET_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: TARGET_PORT
+                  name: gms-api
+      imagePullSecrets:
+        - name: awsecr-cred

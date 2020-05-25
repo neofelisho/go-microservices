@@ -5,18 +5,13 @@ services:
     image: postgres:12-alpine
     restart: always
     volumes:
-      - postgresql:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${GMS_DATABASE_USER}
       POSTGRES_PASSWORD: ${GMS_DATABASE_PASSWORD}
     ports:
       - ${GMS_DATABASE_PORT}:${GMS_DATABASE_PORT}
-    healthcheck:
-      test: pg_isready -U ${GMS_DATABASE_USER}
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 volumes:
-  postgresql:
-    name: postgresql
+  postgres-data:
+    name: postgres-data
