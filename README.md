@@ -22,8 +22,12 @@ This project demonstrates this workflow:
 
 ## Environment Variables
 
-[Document of Environment](env/README-env.md)
+[Document of Environment](env/README_env.md)
 
 ## Development or Debugging with Docker
 
-[Document of Dockerization](docker/README-docker.md)
+[Document of Dockerization](docker/README_docker.md)
+
+## Testing with Kubernetes
+
+[Document of Kubernetes](k8s/README_k8s.md)
