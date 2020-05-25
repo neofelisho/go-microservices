@@ -38,3 +38,11 @@ $ docker build -f docker/grpc_server.Dockerfile -t {YOUR_REGISTRY_NAMESPACE}/grp
 # Source the docker environment
 $ docker-compose -f docker/docker-compose.service.yml -f docker/docker-compose.app.yml up  
 ```
+
+## Push Images to ECR
+
+Before starting to test the K8S, we need to push the docker images to ECR.
+
+```shell script
+$ ./build_push_ecr.sh
+```

@@ -45,7 +45,7 @@ workflows:
           create-repo: true
           dockerfile: docker/restful_api.Dockerfile
           path: .
-          repo: restful_api
+          repo: go-micro-service/restful-api
           tag: $CIRCLE_SHA1
           requires:
             - build
@@ -56,7 +56,7 @@ workflows:
           create-repo: true
           dockerfile: docker/grpc_server.Dockerfile
           path: .
-          repo: grpc_server
+          repo: go-micro-service/grpc-server
           tag: $CIRCLE_SHA1
           requires:
             - build
