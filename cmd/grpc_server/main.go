@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/neofelisho/go-micro-service/config"
+	"github.com/neofelisho/go-micro-service/pkg/database"
 	"github.com/neofelisho/go-micro-service/proto"
 	"google.golang.org/grpc"
 	"log"
@@ -19,7 +19,11 @@ func (g greeterServer) SayHello(_ context.Context, request *proto.HelloRequest) 
 	if request == nil {
 		return nil, errors.New("nil request")
 	}
-	return &proto.HelloReply{Message: fmt.Sprintf("hello, %v", request.Name)}, nil
+	msg, err := database.SayHello(request.Name)
+	if err != nil {
+		return nil, err
+	}
+	return &proto.HelloReply{Message: msg}, nil
 }
 
 func main() {
