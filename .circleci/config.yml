@@ -1,0 +1,65 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.14
+      - image: circleci/postgres:12-alpine
+        environment: # environment variables for primary container
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+    working_directory: /go/src/github.com/neofelisho/go-micro-service
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-pkg-cache
+      - run: source env/env.sh docker
+      - run: go get -v -t -d ./...
+      - run: go vet -v ./...
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
+      - run: go test -v ./...
+      - save_cache: # Store cache in the /go/pkg directory
+          key: v1-pkg-cache
+          paths:
+            - "/go/pkg"
+
+orbs:
+  # https://circleci.com/orbs/registry/orb/circleci/aws-ecr
+  aws-ecr: circleci/aws-ecr@6.8.2
+
+workflows:
+  build:
+    jobs:
+      - build
+      - aws-ecr/build-and-push-image:
+          create-repo: true
+          dockerfile: docker/restful_api.Dockerfile
+          path: .
+          repo: restful_api
+          tag: $CIRCLE_SHA1
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - aws-ecr/build-and-push-image:
+          create-repo: true
+          dockerfile: docker/grpc_server.Dockerfile
+          path: .
+          repo: grpc_server
+          tag: $CIRCLE_SHA1
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
