@@ -1,11 +1,15 @@
 package main
 
 import (
+	"context"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/neofelisho/go-micro-service/config"
+	"github.com/neofelisho/go-micro-service/proto"
+	"google.golang.org/grpc"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -17,7 +21,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// Routes
-	e.GET("/", getSuccess)
+	e.GET("/:name", getGreeting)
 	e.POST("/", echoRequest)
 
 	// Start server
@@ -32,6 +36,34 @@ func echoRequest(context echo.Context) error {
 	return context.String(http.StatusOK, string(body))
 }
 
-func getSuccess(context echo.Context) error {
-	return context.String(http.StatusOK, "success")
+func getGreeting(context echo.Context) error {
+	name := context.Param("name")
+	greeting, err := sayHello(name)
+	if err != nil {
+		context.Logger().Errorf("occurred problem when communicating with gRPC server: %v", err)
+		return context.String(http.StatusInternalServerError, "")
+	}
+	return context.String(http.StatusOK, greeting)
+}
+
+func sayHello(name string) (string, error) {
+	cfg := config.MustLoad().GRPC
+	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second)
+	defer cancelFunc()
+	conn, err := grpc.DialContext(ctx, cfg.ServiceAddress(), grpc.WithInsecure(), grpc.WithBlock())
+	if err != nil {
+		return "", err
+	}
+
+	client := proto.NewGreeterClient(conn)
+	helloReply, err := client.SayHello(ctx, &proto.HelloRequest{Name: name})
+	if err != nil {
+		return "", err
+	}
+	err = conn.Close()
+	if err != nil {
+		return "", err
+	}
+
+	return helloReply.Message, nil
 }
