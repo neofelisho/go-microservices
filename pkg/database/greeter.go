@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/neofelisho/go-micro-service/config"
+	"github.com/neofelisho/go-microservices/config"
 )
 
 func SayHello(name string) (string, error) {

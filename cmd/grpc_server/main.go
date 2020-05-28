@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"errors"
-	"github.com/neofelisho/go-micro-service/config"
-	"github.com/neofelisho/go-micro-service/pkg/database"
-	"github.com/neofelisho/go-micro-service/proto"
+	"github.com/neofelisho/go-microservices/config"
+	"github.com/neofelisho/go-microservices/pkg/database"
+	"github.com/neofelisho/go-microservices/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
 	"log"

@@ -78,11 +78,11 @@ $ minikube ip                                                                   
 
 ### Create Namespace
 
-Let's create a namespace for our services. Here we use `go-micro-service` as the name:
+Let's create a namespace for our services. Here we use `go-microservices` as the name:
 
 ```shell script
 $ kubectl apply -f namespace.yml
-namespace/go-micro-service created
+namespace/go-microservices created
 ```
 
 ### Create Secrets
@@ -168,22 +168,22 @@ Check the logs:
 
 ```shell script
 $ cd k8s/
-$ kubectl -n go-micro-service delete -f grpc_server_deployment.yml
+$ kubectl -n go-microservices delete -f grpc_server_deployment.yml
 deployment.apps "grpc-server" deleted
-$ kubectl -n go-micro-service delete -f restful_api_deployment.yml
+$ kubectl -n go-microservices delete -f restful_api_deployment.yml
 deployment.apps "restful-api" deleted
-$ kubectl -n go-micro-service delete -f postgres_deployment.yml
+$ kubectl -n go-microservices delete -f postgres_deployment.yml
 deployment.apps "postgres" deleted
-$ kubectl -n go-micro-service delete -f grpc_server_service.yml
+$ kubectl -n go-microservices delete -f grpc_server_service.yml
 service "grpc-server" deleted
-$ kubectl -n go-micro-service delete -f restful_api_service.yml
+$ kubectl -n go-microservices delete -f restful_api_service.yml
 service "restful-api" deleted
-$ kubectl -n go-micro-service delete -f postgres_service.yml
+$ kubectl -n go-microservices delete -f postgres_service.yml
 service "postgres" deleted
 $ kubectl delete -f postgres_storage.yml
 persistentvolume "postgres" deleted
 persistentvolumeclaim "postgres" deleted
-$ kubectl -n go-micro-service delete -f secret.yml
+$ kubectl -n go-microservices delete -f secret.yml
 secret "gms-database" deleted
 secret "gms-grpc" deleted
 secret "gms-api" deleted

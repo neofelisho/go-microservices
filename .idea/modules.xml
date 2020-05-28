@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/go-micro-service.iml" filepath="$PROJECT_DIR$/.idea/go-micro-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/go-microservices.iml" filepath="$PROJECT_DIR$/.idea/go-microservices.iml" />
     </modules>
   </component>
 </project>

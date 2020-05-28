@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NAMESPACE=go-micro-service
+NAMESPACE=go-microservices
 
 kubectl -n $NAMESPACE delete secret gms-database
 kubectl -n $NAMESPACE create secret generic gms-database \

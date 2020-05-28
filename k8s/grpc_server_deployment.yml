@@ -4,7 +4,7 @@ metadata:
   name: grpc-server
   labels:
     app: grpc-server
-  namespace: go-micro-service
+  namespace: go-microservices
 spec:
   replicas: 1
   selector:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: grpc-server
-          image: go-micro-service/grpc-server:testing
+          image: repository-url/go-microservices/grpc-server:image-tag
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 50051
