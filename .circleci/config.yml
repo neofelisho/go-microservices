@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: circleci/golang:1.14
       - image: circleci/postgres:12-alpine
-        environment: # environment variables for primary container
+        environment: # environment variables for postgres
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
     working_directory: /go/src/github.com/neofelisho/go-microservices
@@ -32,32 +32,45 @@ jobs:
           key: v1-pkg-cache
           paths:
             - "/go/pkg"
-
-orbs:
-  # https://circleci.com/orbs/registry/orb/circleci/aws-ecr
-  aws-ecr: circleci/aws-ecr@6.8.2
+  deploy:
+    docker:
+      - image: neofelis/circleci-eks:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Docker login to ECR
+          command: |
+            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO_URL}
+      - run:
+          name: Build docker images
+          command: |
+            docker build -f docker/grpc_server.Dockerfile -t ${ECR_REPO_URL}/${NAMESPACE}/grpc-server:${CIRCLE_SHA1} .
+            docker build -f docker/restful_api.Dockerfile -t ${ECR_REPO_URL}/${NAMESPACE}/restful-api:${CIRCLE_SHA1} .
+      - run:
+          name: Push images to ECR
+          command: |
+            docker push ${ECR_REPO_URL}/${NAMESPACE}/grpc-server:${CIRCLE_SHA1}
+            docker push ${ECR_REPO_URL}/${NAMESPACE}/restful-api:${CIRCLE_SHA1}
+      - run:
+          name: Get EKS authentication token
+          command: |
+            aws eks --region ${AWS_REGION} update-kubeconfig --name ${EKS_CLUSTER_NAME}
+      - run:
+          name: Deploy to EKS
+          command: |
+            envsubst < k8s/grpc_server_deployment.yml | kubectl apply -f -
+            envsubst < k8s/grpc_server_service.yml | kubectl apply -f -
+            envsubst < k8s/restful_api_deployment.yml | kubectl apply -f -
+            envsubst < k8s/restful_api_service.yml | kubectl apply -f -
+            kubectl -n ${NAMESPACE} rollout status deployment/grpc-server
+            kubectl -n ${NAMESPACE} rollout status deployment/restful-api
 
 workflows:
-  build:
+  build-deploy:
     jobs:
       - build
-      - aws-ecr/build-and-push-image:
-          create-repo: true
-          dockerfile: docker/restful_api.Dockerfile
-          path: .
-          repo: go-microservices/restful-api
-          tag: $CIRCLE_SHA1
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
-      - aws-ecr/build-and-push-image:
-          create-repo: true
-          dockerfile: docker/grpc_server.Dockerfile
-          path: .
-          repo: go-microservices/grpc-server
-          tag: $CIRCLE_SHA1
+      - deploy:
           requires:
             - build
           filters:
