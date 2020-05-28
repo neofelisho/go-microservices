@@ -1,8 +1,8 @@
-# Go! Micro-service!
+# Go! Microservices!
 
 This project demonstrates this workflow:
 
-- Establish micro-services by Go.
+- Establish microservices by Go.
 - Containerize services and use docker-compose as orchestration tool. 
 - Generate K8S YAML settings and deploy to K8S server.
 
