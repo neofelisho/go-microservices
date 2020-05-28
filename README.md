@@ -1,5 +1,7 @@
 # Go! Microservices!
 
+[![neofelisho](https://circleci.com/gh/neofelisho/go-microservices.svg?style=svg)](https://app.circleci.com/pipelines/github/neofelisho/go-microservices)
+
 This project demonstrates this workflow:
 
 - Establish microservices by Go.
