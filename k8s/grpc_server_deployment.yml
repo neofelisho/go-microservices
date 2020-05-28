@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: grpc-server
-          image: ${REPOSITORY_URL}/${NAMESPACE}/grpc-server:${CIRCLE_SHA1}
+          image: ${ECR_REPOSITORY_URL}/${NAMESPACE}/grpc-server:${CIRCLE_SHA1}
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 50051

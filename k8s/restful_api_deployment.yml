@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: restful-api
-          image: ${REPOSITORY_URL}/${NAMESPACE}/restful-api:${CIRCLE_SHA1}
+          image: ${ECR_REPOSITORY_URL}/${NAMESPACE}/restful-api:${CIRCLE_SHA1}
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 1323
