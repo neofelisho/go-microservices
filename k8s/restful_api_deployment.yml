@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: restful-api
-          image: repository-url/go-microservices/restful-api:image-tag
+          image: ${REPOSITORY_URL}/${NAMESPACE}/restful-api:${CIRCLE_SHA1}
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 1323
