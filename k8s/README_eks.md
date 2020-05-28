@@ -56,7 +56,7 @@ kube-system       Active   3d9h
 
 ```shell script
 $ kubectl apply -f namespace.yml
-namespace/go-micro-service created
+namespace/go-microservices created
 ```
 
 ## Create Secrets
@@ -77,14 +77,14 @@ secret/gms-grpc created
 secret "gms-api" deleted
 secret/gms-api created
 
-$ kubectl -n go-micro-service get secrets
+$ kubectl -n go-microservices get secrets
 NAME                  TYPE                                  DATA   AGE
 default-token-l68tc   kubernetes.io/service-account-token   3      13m
 gms-api               Opaque                                2      23s
 gms-database          Opaque                                4      25s
 gms-grpc              Opaque                                3      24s
 
-$ kubectl -n go-micro-service get secret gms-grpc -o yaml
+$ kubectl -n go-microservices get secret gms-grpc -o yaml
 apiVersion: v1
 data:
   HOST: Z3JwYy1zZXJ2ZXI=
@@ -108,7 +108,7 @@ kind: Secret
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","kind":"Secret","metadata":{"annotations":{},"name":"gms-grpc","namespace":"go-micro-service"},"stringData":{"HOST":"grpc-server","PORT":"50051","TARGET_PORT":"50051"}}
+      {"apiVersion":"v1","kind":"Secret","metadata":{"annotations":{},"name":"gms-grpc","namespace":"go-microservices"},"stringData":{"HOST":"grpc-server","PORT":"50051","TARGET_PORT":"50051"}}
   ...
 type: Opaque
 ```
@@ -157,13 +157,13 @@ We got the host name (DNS name) from the previous step, then we can use Postman 
 ## Clean Up
 
 ```shell script
-kubectl -n go-micro-service delete -f grpc_server_deployment.yml && \
-kubectl -n go-micro-service delete -f restful_api_deployment.yml && \
-kubectl -n go-micro-service delete -f postgres_deployment.yml && \
-kubectl -n go-micro-service delete -f grpc_server_service.yml && \
-kubectl -n go-micro-service delete -f restful_api_service.yml && \
-kubectl -n go-micro-service delete -f postgres_service.yml && \
+kubectl -n go-microservices delete -f grpc_server_deployment.yml && \
+kubectl -n go-microservices delete -f restful_api_deployment.yml && \
+kubectl -n go-microservices delete -f postgres_deployment.yml && \
+kubectl -n go-microservices delete -f grpc_server_service.yml && \
+kubectl -n go-microservices delete -f restful_api_service.yml && \
+kubectl -n go-microservices delete -f postgres_service.yml && \
 kubectl delete -f postgres_storage.yml && \
-kubectl -n go-micro-service delete -f secret.yml && \
+kubectl -n go-microservices delete -f secret.yml && \
 kubectl delete -f namespace.yml
 ```

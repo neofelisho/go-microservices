@@ -4,7 +4,7 @@ metadata:
   name: restful-api
   labels:
     app: restful-api
-  namespace: go-micro-service
+  namespace: go-microservices
 spec:
   replicas: 1
   selector:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: restful-api
-          image: go-micro-service/restful-api:testing
+          image: repository-url/go-microservices/restful-api:image-tag
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 1323

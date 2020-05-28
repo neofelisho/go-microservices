@@ -1,4 +1,4 @@
-module github.com/neofelisho/go-micro-service
+module github.com/neofelisho/go-microservices
 
 go 1.14
 

@@ -4,7 +4,7 @@ metadata:
   name: restful-api
   labels:
     app: restful-api
-  namespace: go-micro-service
+  namespace: go-microservices
 spec:
   type: LoadBalancer
   ports:

@@ -5,7 +5,7 @@ metadata:
   labels:
     type: local
     app: postgres
-  namespace: go-micro-service
+  namespace: go-microservices
 spec:
   storageClassName: manual
   capacity:
@@ -21,7 +21,7 @@ metadata:
   name: postgres
   labels:
     app: postgres
-  namespace: go-micro-service
+  namespace: go-microservices
 spec:
   storageClassName: manual
   accessModes:

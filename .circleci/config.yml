@@ -8,7 +8,7 @@ jobs:
         environment: # environment variables for primary container
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-    working_directory: /go/src/github.com/neofelisho/go-micro-service
+    working_directory: /go/src/github.com/neofelisho/go-microservices
     steps:
       - checkout
       - restore_cache:
@@ -45,7 +45,7 @@ workflows:
           create-repo: true
           dockerfile: docker/restful_api.Dockerfile
           path: .
-          repo: go-micro-service/restful-api
+          repo: go-microservices/restful-api
           tag: $CIRCLE_SHA1
           requires:
             - build
@@ -56,7 +56,7 @@ workflows:
           create-repo: true
           dockerfile: docker/grpc_server.Dockerfile
           path: .
-          repo: go-micro-service/grpc-server
+          repo: go-microservices/grpc-server
           tag: $CIRCLE_SHA1
           requires:
             - build
